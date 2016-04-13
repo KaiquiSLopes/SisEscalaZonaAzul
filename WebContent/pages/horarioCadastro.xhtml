@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="/templates/modeloGeral.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:viewParam name="horarioAcao" value="#{horarioBean.acao}" />
+				<f:viewParam name="horarioCodigo" value="#{horarioBean.codigo}" />
+				<f:event listener="#{horarioBean.carregarCadastro}" type="preRenderView" />
+			</f:metadata>
+		</ui:define>
+		
+		<ui:define name="Conteudo">
+			<h:form id="formularioHorarioCadastro">
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Horario"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid id="painelHorarioCadastroDados" columns="2">
+					<p:outputLabel value="Codigo"/>
+					<p:inputText maxlength="20" size="10" 
+								 readonly="true" value="#{horarioBean.horarioCadastro.codigo}"/>
+					
+					<p:outputLabel value="Horario Inicio"/>
+					<p:calendar locale="pt" pattern="HH:mm" timeOnly="true" 
+								value="#{horarioBean.horarioCadastro.horarioInicio}"
+								readonly="#{horarioBean.acao == 'Excluir'}">
+						<f:validateBean />
+					</p:calendar>
+					
+					<p:outputLabel value="Horario Termino"/>
+					<p:calendar locale="pt" pattern="HH:mm" 
+								timeOnly="true" value="#{horarioBean.horarioCadastro.horarioSaida}"
+								readonly="#{horarioBean.acao == 'Excluir'}">
+							<f:validateBean />
+					</p:calendar>
+					
+					<p:outputLabel value="Dia da Semana"/>
+					<p:calendar locale="pt" pattern="dd/MM/yyyy" 
+								value="#{horarioBean.horarioCadastro.diaSemana}"
+								readonly="#{horarioBean.acao == 'Excluir'}">
+						<f:validateBean />	
+					</p:calendar>
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="5">
+					<p:commandButton value="Novo" actionListener="#{horarioBean.novo}" 
+												  update=":formularioHorarioCadastro:painelHorarioCadastroDados"
+												  rendered="#{horarioBean.acao == 'Novo'}"/>
+												  
+					<p:commandButton value="Salvar" actionListener="#{horarioBean.salvar}" 
+													update=":mensagemGlobal :formularioHorarioCadastro:painelHorarioCadastroDados"
+													rendered="#{horarioBean.acao == 'Novo'}"/>
+					
+					<p:commandButton value="Excluir" actionListener="#{horarioBean.excluir}"
+													 update=":mensagemGlobal"
+													 rendered="#{horarioBean.acao == 'Excluir'}"/>
+					
+					<p:commandButton value="Editar" actionListener="#{horarioBean.editar}"
+													 update=":mensagemGlobal"
+													 rendered="#{horarioBean.acao == 'Editar'}"/>
+					
+					<p:button value="Voltar" outcome="/pages/horarioPesquisa.xhtml"/>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

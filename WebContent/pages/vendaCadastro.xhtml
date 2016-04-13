@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="/templates/modeloGeral.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:viewParam name="vendaAcao" value="#{vendasBean.acao}" />
+				<f:viewParam name="vendaCodigo" value="#{vendasBean.codigo}" />
+				<f:event listener="#{vendasBean.carregarCadastro}" type="preRenderView" />
+			</f:metadata>
+		</ui:define>
+	
+		<ui:define name="Conteudo">
+			<h:form id="formularioVendaCadastro">
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Venda"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid id="painelVendaCadastroDados" columns="2">
+					<p:outputLabel value="Codigo"/>
+					<p:inputText maxlength="20" size="10" readonly="true" 
+								 value="#{vendasBean.vendaCadastro.codigo}"/>
+					
+					<p:outputLabel value="Horario"/>
+					<p:calendar locale="pt" pattern="HH:mm" timeOnly="true"
+										   value="#{vendasBean.vendaCadastro.horario}" 
+										   readonly="#{vendasBean.acao == 'Excluir'}">
+							<f:validateBean />		  
+					</p:calendar>
+					
+					<p:outputLabel value="Preço Unitário Talão"/>
+					<p:inputText size="15" maxlength="8" 
+										   value="#{vendasBean.vendaCadastro.precoTalao}" 
+										   readonly="#{vendasBean.acao == 'Excluir'}">
+							<f:validateBean />
+					</p:inputText>
+					
+					<p:outputLabel value="Quantidade de Talão"/>
+					<p:inputText size="30" maxlength="10" 
+										   value="#{vendasBean.vendaCadastro.quantidadeTalao}" 
+										   readonly="#{vendasBean.acao == 'Excluir'}">
+							<f:validateBean />
+					</p:inputText>
+		
+					
+					<p:outputLabel value="Preço Unitário Folha"/>
+					<p:inputText size="15" maxlength="8" 
+										   value="#{vendasBean.vendaCadastro.precoFolha}" 
+										   readonly="#{vendasBean.acao == 'Excluir'}">
+							<f:validateBean />
+					</p:inputText>
+					
+			 		<p:outputLabel value="Quantidade de Folha"/>
+					<p:inputText size="30" maxlength="10" 
+										   value="#{vendasBean.vendaCadastro.quantidadeUnitaria}" 
+										   readonly="#{vendasBean.acao == 'Excluir'}">
+							<f:validateBean />
+					</p:inputText>
+					
+					
+					<p:outputLabel value="Guardinha: "/>
+						<p:selectOneMenu value="#{vendasBean.vendaCadastro.guardinha}"
+										 converter="guardinhaConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Guardinha"/>
+							<f:selectItems value="#{vendasBean.listaGuardinhas}"
+										   var="guardinhaCursor" 
+										   itemValue="#{guardinhaCursor}" 
+										   itemLabel="#{guardinhaCursor.nomeGuardinha}" />
+								<f:validateBean />
+						</p:selectOneMenu>
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="3">
+					<p:commandButton value="Novo" actionListener="#{vendasBean.novo}"
+												  update=":formularioVendaCadastro:painelVendaCadastroDados"
+												  rendered="#{vendasBean.acao == 'Novo'}"/>
+												  
+					<p:commandButton value="Salvar" actionListener="#{vendasBean.salvar}" 
+													update=":mensagemGlobal :formularioVendaCadastro:painelVendaCadastroDados"
+													rendered="#{vendasBean.acao == 'Novo'}"/>
+													
+					<p:commandButton value="Excluir" actionListener="#{vendasBean.excluir}" 
+													update=":mensagemGlobal"
+													rendered="#{vendasBean.acao == 'Excluir'}"/>
+													
+					<p:commandButton value="Editar" actionListener="#{vendasBean.editar}" 
+													update=":mensagemGlobal"
+													rendered="#{vendasBean.acao == 'Editar'}"/>
+													
+					<p:button value="Voltar" outcome="/pages/vendaPesquisa.xhtml"/>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

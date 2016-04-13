@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="/templates/modeloGeral.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:event listener="#{vendasBean.carregarPesquisa}" type="preRenderView" />
+			</f:metadata>
+		</ui:define>
+	
+		<ui:define name="Conteudo">
+			<h:form>
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Venda"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<p:dataTable id="tabelaVenda"
+							 emptyMessage="Nenhum Registro Encontrado!"
+							 value="#{vendasBean.listaVendas}"
+							 filteredValue="#{vendasBean.listaVendasFiltrados}"
+							 var="vendaCursor"
+							 rows="10" paginator="true">
+							 
+				<f:facet name="footer">
+					<p:button value="Novo" outcome="/pages/vendaCadastro.xhtml">
+						<f:param name="vendaAcao" value="Novo"/>
+					</p:button>
+					
+					<h:commandLink>
+		                <p:graphicImage library="images" name="excel.png" width="24"/>
+		                <p:dataExporter type="xls" target="tabelaVenda" fileName="vendas" />
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage library="images" name="pdf.png" width="24"/>
+		                <p:dataExporter type="pdf" target="tabelaVenda" fileName="vendas" encoding="ISO-8859-1"/>
+		            </h:commandLink>	
+					
+				</f:facet>
+					
+					<p:column headerText="Codigo" style="width: 8%;"> 
+						<h:outputText value="#{vendaCursor.codigo}" />
+					</p:column>
+					
+					<p:column headerText="Horario" filterBy="#{vendaCursor.horario}" 
+												   sortBy="#{vendaCursor.horario}"> 
+						<h:outputText value="#{vendaCursor.horario}" />
+					</p:column>
+					
+					<p:column headerText="Preço Folha"> 
+						<h:outputText value="#{vendaCursor.precoFolha}" />
+					</p:column>
+					
+					<p:column headerText="Preço Talão"> 
+						<h:outputText value="#{vendaCursor.precoTalao}" />
+					</p:column>
+					
+					<p:column headerText="QTD Talão"> 
+						<h:outputText value="#{vendaCursor.quantidadeTalao}" />
+					</p:column>
+					
+					<p:column headerText="QTD Folha"> 
+						<h:outputText value="#{vendaCursor.quantidadeUnitaria}" />
+					</p:column>
+					
+					
+					<p:column headerText="Codigo Guardinha"> 
+						<h:outputText value="#{vendaCursor.guardinha.nomeGuardinha}" />
+					</p:column>
+					
+
+						<p:column headerText="Opções" style="width: 19%;" exportable="false"> 
+							<p:button value="Excluir" outcome="/pages/vendaCadastro.xhtml">
+								<f:param name="vendaAcao" value="Excluir"/>
+								<f:param  name="vendaCodigo" value="#{vendaCursor.codigo}"/>
+							</p:button>
+							
+							<p:button value="Editar" outcome="/pages/vendaCadastro.xhtml">
+								<f:param name="vendaAcao" value="Editar"/>
+								<f:param  name="vendaCodigo" value="#{vendaCursor.codigo}"/>
+							</p:button>
+						</p:column>
+					
+				</p:dataTable>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

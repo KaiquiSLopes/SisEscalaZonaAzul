@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="/templates/modeloGeral.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:viewParam name="escalaAcao" value="#{escalaBean.acao}" />
+				<f:viewParam name="escalaCodigo" value="#{escalaBean.codigo}" />
+				<f:event listener="#{escalaBean.carregarCadastro}" type="preRenderView" />
+			</f:metadata>
+		</ui:define>
+	
+		<ui:define name="Conteudo">
+			<h:form id="formularioEscalaCadastro">
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Escala"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid id="painelEscalaCadastroDados" columns="2">
+					<p:outputLabel value="Codigo"/>
+					<p:inputText maxlength="20" size="10" readonly="true" 
+								 value="#{escalaBean.escalaCadastro.codigo}"/>
+					
+
+					<p:outputLabel value="Guardinha: "/>
+						<p:selectOneMenu value="#{escalaBean.escalaCadastro.guardinha}"
+										 converter="guardinhaConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Guardinha"/>
+							<f:selectItems value="#{escalaBean.listaGuardinhas}"
+										   var="guardinhaCursor" 
+										   itemValue="#{guardinhaCursor}" 
+										   itemLabel="#{guardinhaCursor.nomeGuardinha}" />
+								<f:validateBean />
+						</p:selectOneMenu>
+					
+
+					<p:outputLabel value="Setor: "/>
+						<p:selectOneMenu value="#{escalaBean.escalaCadastro.setor}" 
+										 converter="setorConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Setor" />
+							<f:selectItems value="#{escalaBean.listaSetores}" 
+										   var="setorCursor"
+										   itemValue="#{setorCursor}" 
+										   itemLabel="#{setorCursor.nome}"/>
+								<f:validateBean />	
+						</p:selectOneMenu>
+					
+					<p:outputLabel value="Supervisor: "/>
+						<p:selectOneMenu value="#{escalaBean.escalaCadastro.supervisor}" 
+										 converter="supervisorConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Supervisor"/>
+							<f:selectItems value="#{escalaBean.listaSupervisores}"
+										   var="supervisorCursor"
+										   itemValue="#{supervisorCursor}"
+										   itemLabel="#{supervisorCursor.nome}"/>
+								<f:validateBean />
+						</p:selectOneMenu>
+
+					
+					<p:outputLabel value="Horario: "/>
+						<p:selectOneMenu value="#{escalaBean.escalaCadastro.horario}"
+										 converter="horarioConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Horario"/>
+							<f:selectItems value="#{escalaBean.listaHorarios}"
+										   var="horarioCursor"
+										   itemValue="#{horarioCursor}"
+										   itemLabel="#{horarioCursor.diaSemana}"/>
+								<f:validateBean />
+						</p:selectOneMenu>
+
+				</h:panelGrid>
+				
+				<h:panelGrid columns="3">
+					<p:commandButton value="Novo" actionListener="#{escalaBean.novo}"
+												  update=":formularioEscalaCadastro:painelEscalaCadastroDados"
+												  rendered="#{escalaBean.acao == 'Novo'}"/>
+												  
+					<p:commandButton value="Salvar" actionListener="#{escalaBean.salvar}" 
+													update=":mensagemGlobal :formularioEscalaCadastro:painelEscalaCadastroDados"
+													rendered="#{escalaBean.acao == 'Novo'}"/>
+													
+					<p:commandButton value="Excluir" actionListener="#{escalaBean.excluir}" 
+													update=":mensagemGlobal"
+													rendered="#{escalaBean.acao == 'Excluir'}"/>
+													
+					<p:commandButton value="Editar" actionListener="#{escalaBean.editar}" 
+													update=":mensagemGlobal"
+													rendered="#{escalaBean.acao == 'Editar'}"/>
+													
+					<p:button value="Voltar" outcome="/pages/escalaPesquisa.xhtml"/>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

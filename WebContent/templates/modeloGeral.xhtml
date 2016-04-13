@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:insert name="metadata" />
+	
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Guarda Mirim Ourinhos</title>
+<!-- 		<h:outputStylesheet library="css" name="estilos.css"/> -->
+	<h:outputScript library="js" name="script.js"/>
+</h:head>
+<h:body>
+<p:growl id="mensagemGlobal" sticky="true" />
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north"
+			header="Sistema da Guarda Mirim de Ourinhos" resizable="false"
+			closable="false" collapsible="false">
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" header="Desenvolvido por Kaiqui Lopes"
+			resizable="false" closable="false" collapsible="false">
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="200" resizable="false"
+			closable="false" collapsible="false">
+			<h:form id="formularioMenuPrincipal">
+				<p:panelMenu id="painelMenuPrincipal">
+
+					<p:submenu label="Arquivo">
+						<p:menuitem value="Login" outcome="/pages/autenticacao.xhtml" 
+									rendered="#{autenticacaoBean.supervisorLogado.nomeUsuario == null}" />
+						<p:menuitem value="Principal" outcome="/pages/principal.xhtml" 
+						/>
+						<p:menuitem value="Sair" action="#{autenticacaoBean.sair}" 
+									rendered="#{autenticacaoBean.supervisorLogado.nomeUsuario != null}"/>
+					</p:submenu>
+
+					<p:submenu label="Cadastros" rendered="#{autenticacaoBean.supervisorLogado.nomeUsuario != null}">
+						<p:menuitem value="Supervisores" outcome="/pages/supervisorPesquisa.xhtml" />
+						<p:menuitem value="Horarios" outcome="/pages/horarioPesquisa.xhtml" />
+						<p:menuitem value="Setores" outcome="/pages/setorPesquisa.xhtml" />
+						<p:menuitem value="Guardinhas" outcome="/pages/guardinhaPesquisa.xhtml" />
+						<p:menuitem value="Escalas" outcome="/pages/escalaPesquisa.xhtml" />
+						<p:menuitem value="Alocações" outcome="/pages/alocacaoPesquisa.xhtml" />
+						<p:menuitem value="Pontos de Referencia" outcome="/pages/pontoReferenciaPesquisa.xhtml" />
+						<p:menuitem value="Guardinha Alocações" outcome="/pages/guardinhaAlocacaoPesquisa.xhtml" />
+						<p:menuitem value="Vendas" outcome="/pages/vendaPesquisa.xhtml" />
+					</p:submenu>
+
+
+				</p:panelMenu>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" resizable="false" closable="false"
+			collapsible="false">
+			<ui:insert name="Conteudo" />
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+</html>

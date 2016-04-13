@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="/templates/modeloGeral.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:viewParam name="alocacaoAcao" value="#{alocacaoBean.acao}" />
+				<f:viewParam name="alocacaoCodigo" value="#{alocacaoBean.codigo}" />
+				<f:event listener="#{alocacaoBean.carregarCadastro}" type="preRenderView" />
+			</f:metadata>
+		</ui:define>
+	
+		<ui:define name="Conteudo">
+			<h:form id="formularioAlocacaoCadastro">
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Alocação"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid id="painelAlocacaoCadastroDados" columns="2">
+					<p:outputLabel value="Codigo"/>
+					<p:inputText maxlength="20" size="10" readonly="true" 
+												value="#{alocacaoBean.alocacaoCadastro.codigo}"/>
+					
+					<p:outputLabel value="Endereço"/>
+					<p:inputText size="30" maxlength="50" 
+										   value="#{alocacaoBean.alocacaoCadastro.endereco}" 
+										   readonly="#{alocacaoBean.acao == 'Excluir'}">
+							<f:validateBean />	  
+					</p:inputText>
+					
+					<p:outputLabel value="Supervisor: "/>
+						<p:selectOneMenu value="#{alocacaoBean.alocacaoCadastro.supervisor}" 
+										 converter="supervisorConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Supervisor"/>
+							<f:selectItems value="#{alocacaoBean.listaSupervisores}"
+										   var="supervisorCursor"
+										   itemValue="#{supervisorCursor}"
+										   itemLabel="#{supervisorCursor.nome}"/>
+								<f:validateBean />
+						</p:selectOneMenu>
+					
+					<p:outputLabel value="Guardinha: "/>
+						<p:selectOneMenu value="#{alocacaoBean.alocacaoCadastro.guardinha}"
+										 converter="guardinhaConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Guardinha"/>
+							<f:selectItems value="#{alocacaoBean.listaGuardinhas}"
+										   var="guardinhaCursor" 
+										   itemValue="#{guardinhaCursor}" 
+										   itemLabel="#{guardinhaCursor.nomeGuardinha}" />
+								<f:validateBean />
+						</p:selectOneMenu>
+					
+					<p:outputLabel value="Ponto de Referencia: "/>
+						<p:selectOneMenu value="#{alocacaoBean.alocacaoCadastro.pontoReferencia}"
+										 converter="pontoReferenciaConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Ponto de Referencia"/>
+							<f:selectItems value="#{alocacaoBean.listaPontoReferencias}"
+										   var="pontoReferenciaCursor"
+										   itemValue="#{pontoReferenciaCursor}"
+										   itemLabel="#{pontoReferenciaCursor.descricao}"/>
+								<f:validateBean />
+						</p:selectOneMenu>
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="3">
+					<p:commandButton value="Novo" actionListener="#{alocacaoBean.novo}"
+												  update=":formularioAlocacaoCadastro:painelAlocacaoCadastroDados"
+												  rendered="#{alocacaoBean.acao == 'Novo'}"/>
+												  
+					<p:commandButton value="Salvar" actionListener="#{alocacaoBean.salvar}" 
+													update=":mensagemGlobal :formularioAlocacaoCadastro:painelAlocacaoCadastroDados"
+													rendered="#{alocacaoBean.acao == 'Novo'}"/>
+													
+					<p:commandButton value="Excluir" actionListener="#{alocacaoBean.excluir}" 
+													 update=":mensagemGlobal"
+													 rendered="#{alocacaoBean.acao == 'Excluir'}"/>
+													 
+					<p:commandButton value="Editar" actionListener="#{alocacaoBean.editar}" 
+													 update=":mensagemGlobal"
+													 rendered="#{alocacaoBean.acao == 'Editar'}"/>
+													
+					<p:button value="Voltar" outcome="/pages/alocacaoPesquisa.xhtml"/>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

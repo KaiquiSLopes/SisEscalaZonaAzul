@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="/templates/modeloGeral.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:viewParam name="guardinhaAlocacaoAcao" value="#{guardinhaAlocacaoBean.acao}" />
+				<f:viewParam name="guardinhaAlocacaoCodigo" value="#{guardinhaAlocacaoBean.codigo}" />
+				<f:event listener="#{guardinhaAlocacaoBean.carregarCadastro}" type="preRenderView" />
+			</f:metadata>
+		</ui:define>
+	
+		<ui:define name="Conteudo">
+			<h:form id="formularioGuardinhaAlocacaoCadastro">
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Guardinha Alocação"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid id="painelGuardinhaAlocacaoCadastroDados" columns="2">
+					<p:outputLabel value="Codigo"/>
+					<p:inputText maxlength="20" size="10" readonly="true" 
+								 value="#{guardinhaAlocacaoBean.guardinhaAlocacaoCadastro.codigo}"/>
+					
+					
+					<p:outputLabel value="Alocação: "/>
+						<p:selectOneMenu value="#{guardinhaAlocacaoBean.guardinhaAlocacaoCadastro.alocacao}"
+										 converter="alocacaoConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione uma Alocação"/>
+							<f:selectItems value="#{guardinhaAlocacaoBean.listaAlocacoes}"
+										   var="guardinhaAlocacaoCursor"
+										   itemValue="#{guardinhaAlocacaoCursor}"
+										   itemLabel="#{guardinhaAlocacaoCursor.endereco}"/>
+								<f:validateBean />
+						</p:selectOneMenu>
+
+
+					
+					<p:outputLabel value="Guardinha: "/>
+						<p:selectOneMenu value="#{guardinhaAlocacaoBean.guardinhaAlocacaoCadastro.guardinha}"
+										 converter="guardinhaConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione um Guardinha"/>
+							<f:selectItems value="#{guardinhaAlocacaoBean.listaGuardinhas}"
+										   var="guardinhaCursor" 
+										   itemValue="#{guardinhaCursor}" 
+										   itemLabel="#{guardinhaCursor.nomeGuardinha}" />
+								<f:validateBean />
+						</p:selectOneMenu>
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="3">
+					<p:commandButton value="Novo" actionListener="#{guardinhaAlocacaoBean.novo}"
+												  update=":formularioGuardinhaAlocacaoCadastro:painelGuardinhaAlocacaoCadastroDados"
+												  rendered="#{guardinhaAlocacaoBean.acao == 'Novo'}"/>
+												  
+					<p:commandButton value="Salvar" actionListener="#{guardinhaAlocacaoBean.salvar}" 
+													update=":mensagemGlobal :formularioGuardinhaAlocacaoCadastro:painelGuardinhaAlocacaoCadastroDados"
+													rendered="#{guardinhaAlocacaoBean.acao == 'Novo'}"/>
+													
+					<p:commandButton value="Excluir" actionListener="#{guardinhaAlocacaoBean.excluir}" 
+													update=":mensagemGlobal"
+													rendered="#{guardinhaAlocacaoBean.acao == 'Excluir'}"/>
+													
+					<p:commandButton value="Editar" actionListener="#{guardinhaAlocacaoBean.editar}" 
+													update=":mensagemGlobal"
+													rendered="#{guardinhaAlocacaoBean.acao == 'Editar'}"/>
+													
+					<p:button value="Voltar" outcome="/pages/guardinhaAlocacaoPesquisa.xhtml"/>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

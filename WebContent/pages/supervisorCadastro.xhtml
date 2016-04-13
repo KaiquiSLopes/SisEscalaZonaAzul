@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:composition template="/templates/modeloGeral.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:viewParam name="supervisorAcao" value="#{supervisorBean.acao}" />
+				<f:viewParam name="supervisorCodigo" value="#{supervisorBean.codigo}" />
+				<f:event listener="#{supervisorBean.carregarCadastro}" type="preRenderView" />
+			</f:metadata>
+		</ui:define>
+	
+		<ui:define name="Conteudo">
+			<h:form id="formularioSupervisorCadastro">
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Supervisor"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid id="painelSupervisorCadastroDados" columns="2">
+					<p:outputLabel value="Codigo"/>
+					<p:inputText maxlength="20" size="10" readonly="true" value="#{supervisorBean.supervisorCadastro.codigo}"/>
+					
+					<p:outputLabel value="Nome"/>
+					<p:inputText maxlength="50" size="30" value="#{supervisorBean.supervisorCadastro.nome}"
+								 readonly="#{supervisorBean.acao == 'Excluir'}">
+						<f:validateBean />
+					</p:inputText>
+					
+				<p:outputLabel value="Endereço"/>
+					<p:inputText maxlength="50" size="30" value="#{supervisorBean.supervisorCadastro.enderecoSupervisor}"
+								 readonly="#{supervisorBean.acao == 'Excluir'}">
+						<f:validateBean />
+					</p:inputText>
+					
+				<p:outputLabel value="Nome de Usuario"/>
+					<p:inputText maxlength="20" size="10" value="#{supervisorBean.supervisorCadastro.nomeUsuario}"
+								 readonly="#{supervisorBean.acao == 'Excluir'}">
+						<f:validateBean />
+					</p:inputText>
+					
+				<p:outputLabel value="Senha de Usuario"/>
+					<p:password maxlength="20" size="10" 
+								 value="#{supervisorBean.supervisorCadastro.senhaUsuario}"
+								 readonly="#{supervisorBean.acao == 'Excluir'}">
+						<f:validateBean />
+					</p:password>
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="5">
+					<p:commandButton value="Novo" actionListener="#{supervisorBean.novo}" 
+												  update=":formularioSupervisorCadastro:painelSupervisorCadastroDados"
+												  rendered="#{supervisorBean.acao == 'Novo'}"/>
+												  
+					<p:commandButton value="Salvar" actionListener="#{supervisorBean.salvar}" 
+													update=":mensagemGlobal :formularioSupervisorCadastro:painelSupervisorCadastroDados"
+													rendered="#{supervisorBean.acao == 'Novo'}"/>
+					
+					<p:commandButton value="Excluir" actionListener="#{supervisorBean.excluir}"
+													 update=":mensagemGlobal"
+													 rendered="#{supervisorBean.acao == 'Excluir'}"/>
+					
+					<p:commandButton value="Editar" actionListener="#{supervisorBean.editar}"
+													 update=":mensagemGlobal"
+													 rendered="#{supervisorBean.acao == 'Editar'}"/>
+					
+					<p:button value="Voltar" outcome="/pages/supervisorPesquisa.xhtml"/>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

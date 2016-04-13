@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory> 
+
+        <!-- Configurações da conexão -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/db_guardaourinhos</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+
+        <!-- Pool Conexões JDBC (quantas conexão hibernate vai gerenciar) -->
+        <property name="connection.pool_size">1</property>
+
+        <!-- Dialeto SQL -->
+        <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+
+        <!-- Gerenciamento da seção -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- Desabilita a Cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+        <!-- Exibir os comandos SQL(Mostrar os comandos) -->
+        <property name="show_sql">true</property>
+
+        <!-- Cria as tabelas -->
+        <property name="hbm2ddl.auto">update</property>
+        
+        <mapping class = "br.com.guardaourinhos.domain.Supervisor" />
+        <mapping class = "br.com.guardaourinhos.domain.Guardinha" />
+        <mapping class = "br.com.guardaourinhos.domain.Setor" />
+        <mapping class = "br.com.guardaourinhos.domain.PontoReferencia" />
+        <mapping class = "br.com.guardaourinhos.domain.Horario" />
+        <mapping class = "br.com.guardaourinhos.domain.Alocacao" />
+        <mapping class = "br.com.guardaourinhos.domain.GuardinhaAlocacao" />
+        <mapping class = "br.com.guardaourinhos.domain.Escala" />
+        <mapping class = "br.com.guardaourinhos.domain.Venda" />
+        
+
+        
+    </session-factory>
+
+</hibernate-configuration>
